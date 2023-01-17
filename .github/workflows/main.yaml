@@ -23,7 +23,6 @@ jobs:
         with:
           go-version-file: 'go.work'
           check-latest: true
-          cache: true
       - name: Setup PNPM
         uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd # pin@v2
         with:
@@ -66,7 +65,6 @@ jobs:
         with:
           go-version-file: 'go.work'
           check-latest: true
-          cache: true
       - name: Setup PNPM
         uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd # pin@v2
         with:
@@ -108,7 +106,6 @@ jobs:
         with:
           go-version-file: 'go.work'
           check-latest: true
-          cache: true
       - name: Setup PNPM
         uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd # pin@v2
         with:

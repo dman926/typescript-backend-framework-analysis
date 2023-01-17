@@ -22,7 +22,9 @@
       },
       "configurations": {
         "production": {
-          "buildTarget": "express-api:build:production"
+          "buildTarget": "express-api:build:production",
+          "inspect": false,
+          "watch": false
         }
       }
     },

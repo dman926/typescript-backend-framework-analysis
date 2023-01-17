@@ -13,7 +13,7 @@ jobs:
     if: ${{ github.event_name != 'pull_request' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # pin@v3
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # pin@v3
         with:
           fetch-depth: 0
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
@@ -21,16 +21,16 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568 # pin@v3
         with:
-          go-version-file: 'go.mod'
+          go-version-file: 'go.work'
           check-latest: true
           cache: true
-          cache-dependency-path: go.sum
+          cache-dependency-path: packages/*/go.sum
       - name: Setup PNPM
         uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd # pin@v2
         with:
           version: latest
       - name: Setup node
-        uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # pin@v3
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # pin@v3
         with:
           node-version: '18'
           cache: 'pnpm'
@@ -56,7 +56,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # pin@v3
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # pin@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
@@ -65,16 +65,16 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568 # pin@v3
         with:
-          go-version-file: 'go.mod'
+          go-version-file: 'go.work'
           check-latest: true
           cache: true
-          cache-dependency-path: go.sum
+          cache-dependency-path: packages/*/go.sum
       - name: Setup PNPM
         uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd # pin@v2
         with:
           version: latest
       - name: Setup node
-        uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # pin@v3
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # pin@v3
         with:
           node-version: '16'
           cache: 'pnpm'
@@ -101,23 +101,23 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
-        agent: [1, 2, 3]
+        agent: [ 1, 2, 3 ]
     steps:
       - name: Checkout
-        uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # pin@v3
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # pin@v3
       - name: Setup Go
         uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568 # pin@v3
         with:
-          go-version-file: 'go.mod'
+          go-version-file: 'go.work'
           check-latest: true
           cache: true
-          cache-dependency-path: go.sum
+          cache-dependency-path: packages/*/go.sum
       - name: Setup PNPM
         uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd # pin@v2
         with:
           version: latest
       - name: Setup node
-        uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # pin@v3
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # pin@v3
         with:
           node-version: '16'
           cache: 'pnpm'

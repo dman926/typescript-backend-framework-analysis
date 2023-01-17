@@ -1,6 +1,7 @@
 {
   "extends": "nx/presets/npm.json",
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "plugins": ["@nx-go/nx-go"],
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/nx-cloud",

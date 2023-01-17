@@ -4,6 +4,10 @@
   "license": "GPL-3.0-or-later",
   "scripts": {},
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "github:dman926/typescript-backend-framework-analysis.git"
+  },
   "devDependencies": {
     "@nrwl/devkit": "^15.5.1",
     "@nrwl/eslint-plugin-nx": "^15.5.1",
@@ -14,6 +18,7 @@
     "@nrwl/nx-cloud": "latest",
     "@nrwl/rollup": "^15.5.1",
     "@nrwl/vite": "^15.5.1",
+    "@nrwl/workspace": "^15.5.1",
     "@nx-go/nx-go": "^2.7.0",
     "nx": "15.5.1",
     "prettier": "^2.6.2"

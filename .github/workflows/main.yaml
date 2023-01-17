@@ -1,0 +1,121 @@
+# https://www.npmjs.com/package/pin-github-action used to pin action versions
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+env:
+  NX_CLOUD_DISTRIBUTED_EXECUTION: true
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # pin@v3
+        with:
+          fetch-depth: 0
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@177b48373c6dc583ce0d9257ffb484bdd232fedf # pin@v3
+      - name: Setup Go
+        uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568 # pin@v3
+        with:
+          go-version-file: 'go.work'
+          check-latest: true
+      - name: Setup PNPM
+        uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd # pin@v2
+        with:
+          version: latest
+      - name: Setup node
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # pin@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Start CI run
+        run: pnpm exec nx-cloud start-ci-run
+      - name: Workspace lint
+        run: pnpm exec nx-cloud record -- pnpm exec nx workspace-lint
+      - name: Format check
+        run: pnpm exec nx-cloud record -- pnpm exec nx format:check
+      - name: Lint
+        run: pnpm exec nx affected --target=lint --parallel=3
+      - name: Test
+        run: pnpm exec nx affected --target=test --parallel=3 --ci --code-coverage
+      - name: Build
+        run: pnpm exec nx affected --target=build --parallel=3
+      - name: Stop CI run
+        run: pnpm exec nx-cloud stop-all-agents
+        if: always()
+  pre:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # pin@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@177b48373c6dc583ce0d9257ffb484bdd232fedf # pin@v3
+      - name: Setup Go
+        uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568 # pin@v3
+        with:
+          go-version-file: 'go.work'
+          check-latest: true
+      - name: Setup PNPM
+        uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd # pin@v2
+        with:
+          version: latest
+      - name: Setup node
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # pin@v3
+        with:
+          node-version: '16'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Start CI run
+        run: pnpm exec nx-cloud start-ci-run
+      - name: Workspace lint
+        run: pnpm exec nx-cloud record -- pnpm exec nx workspace-lint
+      - name: Format check
+        run: pnpm exec nx-cloud record -- pnpm exec nx format:check
+      - name: Lint
+        run: pnpm exec nx affected --target=lint --parallel=3
+      - name: Test
+        run: pnpm exec nx affected --target=test --parallel=3 --ci --code-coverage
+      - name: Build
+        run: pnpm exec nx affected --target=build --parallel=3
+      - name: Stop CI run
+        run: pnpm exec nx-cloud stop-all-agents
+        if: always()
+  agents:
+    runs-on: ubuntu-latest
+    name: Agent ${{ matrix.agent }}
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        agent: [1, 2, 3]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # pin@v3
+      - name: Setup Go
+        uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568 # pin@v3
+        with:
+          go-version-file: 'go.work'
+          check-latest: true
+      - name: Setup PNPM
+        uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd # pin@v2
+        with:
+          version: latest
+      - name: Setup node
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # pin@v3
+        with:
+          node-version: '16'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Start Nx Agent ${{ matrix.agent }}
+        run: pnpm exec nx-cloud start-agent

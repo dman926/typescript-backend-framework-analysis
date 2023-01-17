@@ -22,7 +22,9 @@
       },
       "configurations": {
         "production": {
-          "buildTarget": "fastify-api:build:production"
+          "buildTarget": "fastify-api:build:production",
+          "inspect": false,
+          "watch": false
         }
       }
     },

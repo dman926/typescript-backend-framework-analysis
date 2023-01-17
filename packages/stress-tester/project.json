@@ -29,6 +29,16 @@
         "cwd": "packages/stress-tester",
         "command": "go mod tidy"
       }
+    },
+    "analysis": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "nx run express-api:serve:production",
+          "nx run fastify-api:serve:production",
+          "nx run stress-tester:serve"
+        ]
+      }
     }
   },
   "tags": []
